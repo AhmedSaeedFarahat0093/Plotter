@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { homeLabel, title } from '../defines';
+import { homeLabel, title } from '../shared/defines';
+
 
 @Component({
   selector: 'app-header',

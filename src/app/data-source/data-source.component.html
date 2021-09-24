@@ -1,0 +1,30 @@
+<div class="fields-container" >
+  <div *ngIf="!columsLoadingMode"
+    cdkDropList
+    #originList="cdkDropList"
+    [cdkDropListData]="items"
+    [cdkDropListConnectedTo]="[destinationList]"
+    class="field-list">
+    <div class="field-box" *ngFor="let item of items" cdkDrag>{{item.name}}</div>
+  </div>
+  <app-loading *ngIf="columsLoadingMode"></app-loading>
+  
+</div>
+
+<div class="fields-container mesures"  >
+  <div
+    cdkDropList
+    #destinationList="cdkDropList"
+    [cdkDropListData]="destination"
+    class="field-list"
+    (cdkDropListDropped)="drop($event)"
+    >
+    <div class="field-box" *ngFor="let item of destination;let i =index" cdkDrag>{{item.name}}
+    <button class="btn btn-light" (click)="clear(i)" *ngIf="items.length>0">clear</button>
+    
+  </div>
+  </div>
+</div>
+<div class="chart-container">
+<app-chart [chartObject]="chartObject"  *ngIf="chartObject"  ></app-chart>
+</div>
