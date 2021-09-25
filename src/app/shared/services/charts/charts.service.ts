@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { ChartPostObject } from '../../models/chart-postObject.model';
 import { ChartComponentObject, Series } from '../../models/chartComponentObject.model';
-import { ChartComponentConfig } from '../../models/chartconfig.model';
 import { ChartDataService } from './chart-data.service';
 
 @Injectable({

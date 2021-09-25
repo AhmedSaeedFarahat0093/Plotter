@@ -1,13 +1,14 @@
 <div class="fields-container" >
-  <div *ngIf="!columsLoadingMode"
+  <div *ngIf="!columsLoadingMode && !coloumsapiFailled"
     cdkDropList
     #originList="cdkDropList"
     [cdkDropListData]="items"
     [cdkDropListConnectedTo]="[destinationList]"
     class="field-list">
-    <div class="field-box" *ngFor="let item of items" cdkDrag>{{item.name}}</div>
+    <div class="field-box" *ngFor="let item of items" cdkDrag>{{item?.name}}</div>
   </div>
-  <app-loading *ngIf="columsLoadingMode" [count]="5"></app-loading>
+  <app-loading *ngIf="columsLoadingMode && !coloumsapiFailled" [count]="5"></app-loading>
+  <app-error (retryAction)="setcolumnsAndChart()" *ngIf="coloumsapiFailled"></app-error>
   
 </div>
 
@@ -19,12 +20,15 @@
     class="field-list"
     (cdkDropListDropped)="drop($event)"
     >
-    <div class="field-box" *ngFor="let item of destination;let i =index" cdkDrag>{{item.name}}
-    <button class="btn btn-light" (click)="clear(i)" *ngIf="items.length>0">clear</button>
+    <div class="field-box" *ngFor="let item of destination;let i =index" cdkDrag>{{item?.name}}
+    <button class="btn btn-secondary" (click)="clear(i)" *ngIf="items?.length>0">{{clearbtnlabel}}</button>
     
   </div>
   </div>
 </div>
 <div class="chart-container">
-<app-chart [chartObject]="chartObject"  *ngIf="chartObject"  ></app-chart>
+<app-chart [chartObject]="chartObject"  *ngIf="chartObject && !chartApiFailled && !chartLoading"  ></app-chart>
+<app-error (retryAction)="getChartData()" *ngIf="chartApiFailled" class="chart-error"></app-error>
+<app-loading *ngIf="chartLoading" [count]="4"></app-loading>
+
 </div>

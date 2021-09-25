@@ -64,3 +64,17 @@
     margin-bottom: 10px;
     margin-top: 10px;
 }
+.chart-error{
+  position: absolute;
+  left: 567px;
+  top: 225px;
+}
+
+::ng-deep .chart-container app-loading {
+  .item {
+    top: 220px;
+    width: 53%;
+    position: absolute;
+    left: 340px;
+  }
+}

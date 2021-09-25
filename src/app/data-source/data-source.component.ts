@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { columnsHeader } from '../shared/defines';
+import { clearBtn, columnsHeader, wrongInput } from '../shared/defines';
 import { Columns } from '../shared/models/columns.model';
 import { DimensionColumnsService } from '../shared/services/dimensionColumns/dimension-columns-service.service';
 import {
@@ -22,32 +22,37 @@ export class DataSourceComponent implements OnInit {
   header: string;
   items: Columns[];
   columsLoadingMode: boolean;
-  apiFailled: boolean;
+  coloumsapiFailled: boolean;
   destination: Columns[] = new Array<Columns>(2);
   chartObject: ChartComponentObject[] = new Array<ChartComponentObject>(1);
   chartLoading: boolean = false;
-  count  = 5;
+  chartApiFailled: boolean;
+  clearbtnlabel: string ;
   constructor(private columnService: DimensionColumnsService,
     private chartService: ChartsService) { }
 
   ngOnInit() {
-    this.header = columnsHeader;
-    this.apiFailled = false;
+    this.setUi();
     this.setcolumnsAndChart();
 
   }
+  setUi(): void {
+    this.header = columnsHeader;
+    this.coloumsapiFailled = false;
+    this.clearbtnlabel = clearBtn;
+  }
   setcolumnsAndChart(): void {
     this.columsLoadingMode = true;
-    this.apiFailled = true;
+    this.coloumsapiFailled = false;
     this.columnService.getDimensionColumns().subscribe((res: Columns[]) => {
       this.columsLoadingMode = false;
-      this.apiFailled = false;
+      this.coloumsapiFailled = false;
       this.items = [...res];
       this.setChartParams(this.items);
       this.getChartData();
     }, () => {
       this.columsLoadingMode = false;
-      this.apiFailled = true;
+      this.coloumsapiFailled = true;
     });
   }
 
@@ -82,7 +87,7 @@ export class DataSourceComponent implements OnInit {
         this.destination.splice(1, 0, element);
       }
       else {
-        alert("You should have only one messure and one dimension")
+        alert(wrongInput)
       }
 
       if (this.destination.length === 2) {
@@ -96,13 +101,18 @@ export class DataSourceComponent implements OnInit {
   }
   getChartData(): void {
     this.chartLoading = true;
+    this.chartApiFailled= false;
     const postobject: ChartPostObject = new ChartPostObject();
     postobject.dimension = this.destination[0].name;
     postobject.measures = new Array<string>(1);
     postobject.measures[0] = this.destination[1].name;
     this.chartService.getChart(postobject).subscribe(res => {
-    this.chartLoading = false;
       this.chartObject = [...res];
+    this.chartLoading = false;
+    this.chartApiFailled= false;
+    },()=>{
+      this.chartApiFailled= true;
+       this.chartLoading = false;
     });
   }
 
