@@ -7,7 +7,7 @@
     class="field-list">
     <div class="field-box" *ngFor="let item of items" cdkDrag>{{item.name}}</div>
   </div>
-  <app-loading *ngIf="columsLoadingMode"></app-loading>
+  <app-loading *ngIf="columsLoadingMode" [count]="5"></app-loading>
   
 </div>
 

@@ -1,5 +1,6 @@
-<div class="chart-container">
-<ngx-charts-line-chart
+<div class="chart-container" >
+  <div *ngIf="!LoadingMode">
+<ngx-charts-line-chart 
   [view]="view"
   [scheme]="colorScheme"
   [legend]="chartObject[0]?.config?.legend"
@@ -13,6 +14,9 @@
   [results]="chartObject"
   >
 </ngx-charts-line-chart>
+</div>
+<app-loading *ngIf="LoadingMode" [count]="4"></app-loading>
+
 </div>
 
 
